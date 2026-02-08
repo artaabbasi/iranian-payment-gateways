@@ -15,20 +15,20 @@ from lib.gateway.schema.verify_out_schema import VerifyOutSchema
 
 class SampleGateway(BasePaymentGateway):
     def __init__(self):
-        super().__init__(GatewayInfoDataModel, GatewayTransactionDataModel,
-                         InfoRepository, TransactionRepository)
+        self._transaction_repository = TransactionRepository()
+        self._transaction_type = GatewayTransactionDataModel
 
     def pay(self, data: PaySchema) -> PayOutSchema:
         print(f"Paying {data.amount}")
         uid = uuid.uuid4()
         self._transaction_repository.create(
             self._transaction_type(
-                transaction_id=uid,
+                transaction_id=str(uid),
                 amount=data.amount,
             )
         )
         return PayOutSchema(
-            url=str(f"pay.ir/{uid}"),
+            url=str(f"sample.ir/{uid}"),
             transaction_id=str(uid)
         )
 
