@@ -1,6 +1,7 @@
 from datetime import datetime
 import uuid
 
+from gateways.sample_gateway.datamodel.gateway_info_datamodel import GatewayInfoDataModel
 from gateways.sample_gateway.schema.after_pay_schema import AfterPaySchema
 from gateways.sample_gateway.schema.pay_schema import PaySchema
 from gateways.sample_gateway.schema.verify_schema import VerifySchema
@@ -10,7 +11,7 @@ from lib.gateway.schema.verify_out_schema import VerifyOutSchema
 
 
 class SampleGateway(BasePaymentGateway):
-    def pay(self, data: PaySchema) -> PayOutSchema:
+    def pay(self, info: GatewayInfoDataModel, data: PaySchema) -> PayOutSchema:
         print(f"Paying {data.amount}")
         uid = uuid.uuid4()
         return PayOutSchema(
@@ -18,7 +19,7 @@ class SampleGateway(BasePaymentGateway):
             transaction_id=str(uid)
         )
 
-    def verify(self, data: VerifySchema) -> VerifyOutSchema:
+    def verify(self, info: GatewayInfoDataModel, data: VerifySchema) -> VerifyOutSchema:
         print(f"Verifying {data.transaction_id}: {data.amount}")
         return VerifyOutSchema(
             verified=bool(True),
