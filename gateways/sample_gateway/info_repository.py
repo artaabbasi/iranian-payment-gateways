@@ -1,11 +1,8 @@
 from gateways.sample_gateway.datamodel.gateway_info_datamodel import GatewayInfoDataModel
-from lib.gateway.base_info_repository import BaseInfoRepository
 
 infos = {}
 
-class InfoRepository(BaseInfoRepository):
-    def __init__(self):
-        super().__init__(GatewayInfoDataModel)
+class InfoRepository:
 
     def get(self, unique_index: str) -> GatewayInfoDataModel:
         info = infos.get(unique_index, {})

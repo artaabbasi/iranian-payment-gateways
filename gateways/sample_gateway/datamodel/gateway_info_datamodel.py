@@ -1,6 +1,6 @@
-from lib.gateway.datamodel.base_gateway_info_datamodel import BaseGatewayInfoDataModel
+from pydantic import BaseModel
 
 
-class GatewayInfoDataModel(BaseGatewayInfoDataModel):
+class GatewayInfoDataModel(BaseModel):
     username: str
     password: str

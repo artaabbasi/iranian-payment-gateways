@@ -1,11 +1,8 @@
 from gateways.sample_gateway.datamodel.gateway_transaction_datamodel import GatewayTransactionDataModel
-from lib.gateway.base_transaction_repository import BaseTransactionRepository
 
 transactions = {}
 
-class TransactionRepository(BaseTransactionRepository):
-    def __init__(self):
-        super().__init__(GatewayTransactionDataModel)
+class TransactionRepository:
 
     def get(self, unique_index: str) -> GatewayTransactionDataModel:
         transaction = transactions.get(unique_index, )
