@@ -1,4 +1,4 @@
-from lib.gateway.schema import BaseVerifySchema
+from lib.gateway.schema.base_verify_schema import BaseVerifySchema
 
 
 class VerifySchema(BaseVerifySchema):

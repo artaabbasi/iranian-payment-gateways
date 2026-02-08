@@ -1,4 +1,4 @@
-from lib.gateway.schema import BaseAfterPaySchema
+from lib.gateway.schema.base_after_pay_schema import BaseAfterPaySchema
 
 
 class AfterPaySchema(BaseAfterPaySchema):

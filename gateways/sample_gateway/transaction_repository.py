@@ -8,11 +8,14 @@ class TransactionRepository(BaseTransactionRepository):
         super().__init__(GatewayTransactionDataModel)
 
     def get(self, unique_index: str) -> GatewayTransactionDataModel:
-        transaction = transactions.get(unique_index, {})
+        transaction = transactions.get(unique_index, )
+        if transaction is None:
+            transaction = {}
         return GatewayTransactionDataModel(
             transaction_id=transaction.get('transaction_id'),
             transaction_date=transaction.get('transaction_date'),
             amount=transaction.get('amount'),
+            tracking_code=transaction.get('tracking_code'),
         )
 
     def create(self, data: GatewayTransactionDataModel) -> GatewayTransactionDataModel:
@@ -21,6 +24,7 @@ class TransactionRepository(BaseTransactionRepository):
             transaction_id=transaction_id,
             transaction_date=data.get('transaction_date'),
             amount=data.get('amount'),
+            tracking_code=data.get('tracking_code'),
         )
         transactions.update({transaction_id: transaction})
         return transaction
@@ -31,6 +35,7 @@ class TransactionRepository(BaseTransactionRepository):
             transaction_id=transaction_id,
             transaction_date=data.get('transaction_date'),
             amount=data.get('amount'),
+            tracking_code=data.get('tracking_code'),
         )
         transactions.update({transaction_id: transaction})
         return transaction
