@@ -1,77 +1,68 @@
-# Contributing to Iranian Payment Gateways
+# Contributing to Iranian Payment Gateways SDK 🚀
 
-We welcome contributions to improve this library!  
-This document explains how to **add new gateways**, improve code, and follow conventions.
+Thank you for your interest in contributing! ❤️
 
 ---
 
-## ➕ Adding a New Gateway
-
-1️⃣ Create a new gateway folder:
+## Project Structure 📁
 
 ```
-gateways/<gateway_name>_gateway/
-```
-
-2️⃣ Define gateway-specific schemas:
-
-```python
-class <GatewayName>PaySchema(BasePaySchema): ...
-class <GatewayName>VerifySchema(BaseVerifySchema): ...
-class <GatewayName>AfterPaySchema(BaseAfterPaySchema): ...
-```
-
-3️⃣ Implement the gateway:
-
-```python
-class <GatewayName>Gateway(
-    BasePaymentGateway[
-        <GatewayName>PaySchema,
-        <GatewayName>AfterPaySchema,
-        <GatewayName>VerifySchema
-    ]
-):
-    def pay(self, data): ...
-    def verify(self, data): ...
-    def after_pay(self, data): ...
-```
-
-4️⃣ Register the gateway:
-
-```python
-gateway_map["<gateway_name>"] = <GatewayName>Gateway
+gateways/
+  <gateway_name>/
+    <gateway_name>.py          # main gateway class
+    datamodel/                 # Gateway-specific datamodels
+    schema/                    # Gateway-specific schemas
+lib/
+  gateway/
+    base_payment_gateway.py    # Base gateway class
+    base_exception.py          # Base exceptions
 ```
 
 ---
 
-## 🧹 Code Style
+## Adding a New Gateway ➕
 
-- Python 3.10+
-- Type annotations for all public functions
-- Use async functions where appropriate (`a_pay`, `a_verify`, `a_after_pay`)
-- Follow existing file/folder structure
+1. Create a new folder under `gateways/` with the gateway name.
+2. Add:
+   - `your_gateway.py` extending `BasePaymentGateway`.
+   - `datamodel/` for gateway-specific data.
+   - `schema/` for payment/verify/after_pay schemas.
+3. Implement required methods:
+   - `pay(data: PaySchema)`
+   - `verify(data: VerifySchema)`
+   - `after_pay(data: AfterPaySchema)`
 
----
-
-## 🧪 Testing
-
-- Add tests for all new gateway methods
-- Use existing repository for persistence mocks
-- Ensure Pay/Verify/AfterPay flows are tested
-- Use `pytest` for running tests
+💡 Use `GatewayInfoDataModel(username, password)` for your gateway info.
 
 ---
 
-## 🤝 Pull Requests
+## Coding Guidelines 🧹
 
-1. Fork the repository
-2. Create a branch (`feature/<gateway_name>` or `fix/<issue>`)
-3. Add your code and tests
-4. Run `pytest` to verify everything works
-5. Submit a pull request with a descriptive title and summary
+- Python ≥ 3.10
+- Type hints required.
+- Use async methods where possible (`a_pay`, `a_verify`, `a_after_pay`).
+- Docstrings for all public methods.
+- Follow Clean Architecture principles.
 
 ---
 
-## ❤️ Thank You
+## Testing 🧪
 
-Your contribution helps make **integration with Iranian payment gateways easier for everyone**!
+- Add tests in `tests/` folder (to be created) for each gateway.
+- Test both sync and async methods.
+- Mock external APIs when possible.
+
+---
+
+## Commit & PR Guidelines 🔧
+
+- Branch naming: `feature/<gateway_name>` or `bugfix/<issue>`
+- Commit messages: Use imperative tense.
+- Open PRs against `main` branch.
+- Include tests and docs for new features.
+
+---
+
+## Gateway Requests 💬
+
+If your favorite Iranian payment gateway is missing, please open an issue or contact the maintainers! We love to hear which gateways you need next. 🚀
