@@ -80,7 +80,7 @@ class BehpardakhtGateway(BasePaymentGateway):
             if status == "0":
                 return PayOutSchema(
                     url=f"{self._default_urls()['start_pay_url']}?RefId={token}",
-                    transaction_id=str(uuid)
+                    transaction_id=data.transaction_id
                 )
             else:
                 raise GatewayError(code=status, message=self._get_status_message(status))
