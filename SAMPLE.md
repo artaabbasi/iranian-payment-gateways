@@ -36,7 +36,8 @@ class Transaction(models.Model):
 ```python
 # myapp/repository.py
 from myapp.models import Transaction
-from gateways.sample_gateway.datamodel.gateway_transaction_datamodel import GatewayTransactionDataModel
+from gateways.behpardakht_gateway.datamodel.behpardakht_transaction_datamodel import GatewayTransactionDataModel
+
 
 class DjangoTransactionRepository:
     def create(self, transaction: GatewayTransactionDataModel):
@@ -118,7 +119,8 @@ class Transaction(Base):
 # app/repository.py
 from sqlalchemy.orm import Session
 from app.models import Transaction
-from gateways.sample_gateway.datamodel.gateway_transaction_datamodel import GatewayTransactionDataModel
+from gateways.behpardakht_gateway.datamodel.behpardakht_transaction_datamodel import GatewayTransactionDataModel
+
 
 class SQLAlchemyTransactionRepository:
     def __init__(self, db: Session):
