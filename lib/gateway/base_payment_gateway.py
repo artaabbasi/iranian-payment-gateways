@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic, Type
-
-from pydantic import BaseModel
-
+from typing import TypeVar, Generic, Type, Any
 from lib.gateway.datamodel.base_info_datamodel import BaseInfoDataModel
 from lib.gateway.schema.base_after_pay_schema import BaseAfterPaySchema
 from lib.gateway.schema.base_pay_schema import BasePaySchema
@@ -26,7 +23,7 @@ class BasePaymentGateway(ABC, Generic[P, AP, V, I]):
         raise Exception("Defining `verify` is required.")
 
     @abstractmethod
-    def after_pay(self, data: AP) -> None:
+    def after_pay(self, data: AP) -> Any:
         raise Exception("Defining `after_pay` is required.")
 
     async def a_pay(self, info: I, data: P) -> PayOutSchema:
@@ -35,5 +32,5 @@ class BasePaymentGateway(ABC, Generic[P, AP, V, I]):
     async def a_verify(self, info: I, data: V) -> VerifyOutSchema:
         return self.verify(info, data)
 
-    async def a_after_pay(self, data: AP) -> None:
+    async def a_after_pay(self, data: AP) -> Any:
         return self.after_pay(data)
