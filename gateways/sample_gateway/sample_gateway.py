@@ -11,7 +11,10 @@ from lib.gateway.schema.verify_out_schema import VerifyOutSchema
 
 
 class SampleGateway(BasePaymentGateway):
-    def pay(self, info: GatewayInfoDataModel, data: PaySchema) -> PayOutSchema:
+    def __init__(self , info: GatewayInfoDataModel):
+        super().__init__(info)
+
+    def pay(self, data: PaySchema) -> PayOutSchema:
         print(f"Paying {data.amount}")
         uid = uuid.uuid4()
         return PayOutSchema(
@@ -19,7 +22,7 @@ class SampleGateway(BasePaymentGateway):
             transaction_id=str(uid)
         )
 
-    def verify(self, info: GatewayInfoDataModel, data: VerifySchema) -> VerifyOutSchema:
+    def verify(self, data: VerifySchema) -> VerifyOutSchema:
         print(f"Verifying {data.transaction_id}: {data.amount}")
         return VerifyOutSchema(
             verified=bool(True),

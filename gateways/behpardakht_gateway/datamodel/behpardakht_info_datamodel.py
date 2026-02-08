@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from lib.gateway.datamodel.base_info_datamodel import BaseInfoDataModel
 
 
-class BehpardakhtInfoDataModel(BaseModel):
+class BehpardakhtInfoDataModel(BaseInfoDataModel):
     username: str
     password: str
     terminal_id: int

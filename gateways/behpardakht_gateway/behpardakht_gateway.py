@@ -16,6 +16,8 @@ from zeep.exceptions import Fault
 
 
 class BehpardakhtGateway(BasePaymentGateway):
+    def __init__(self , info: BehpardakhtInfoDataModel):
+        super().__init__(info)
 
     @staticmethod
     def _default_urls():
@@ -51,11 +53,11 @@ class BehpardakhtGateway(BasePaymentGateway):
     def _get_status_message(code: str) -> str:
         return messages.get(code, "خطای نامشخص")
 
-    def pay(self, info: BehpardakhtInfoDataModel, data: PaySchema) -> PayOutSchema:
-        data = {
-            "terminalId": info.terminal_id,
-            "userName": info.username,
-            "userPassword": info.password,
+    def pay(self, data: PaySchema) -> PayOutSchema:
+        payload = {
+            "terminalId": self._info.terminal_id,
+            "userName": self._info.username,
+            "userPassword": self._info.password,
             "orderId": data.transaction_id,
             "amount": data.amount,
             "localDate": self._get_current_date(),
@@ -72,7 +74,7 @@ class BehpardakhtGateway(BasePaymentGateway):
             raise GatewayConnectionError("در ارتباط با بانک مشکلی پیش آمده است.")
 
         try:
-            response = client.service.bpPayRequest(**data)
+            response = client.service.bpPayRequest(**payload)
             parts = response.split(",")
             status, token = parts
             if len(parts) != 2:
@@ -90,35 +92,35 @@ class BehpardakhtGateway(BasePaymentGateway):
         except (Fault, ValueError) as e:
             raise GatewayConnectionError("در ارتباط با بانک مشکلی پیش آمده است.")
 
-    def verify(self, info: BehpardakhtInfoDataModel, data: VerifySchema) -> VerifyOutSchema:
-        data = {
-            "terminalId": info.terminal_id,
-            "userName": info.username,
-            "userPassword": info.password,
+    def verify(self, data: VerifySchema) -> VerifyOutSchema:
+        payload = {
+            "terminalId": self._info.terminal_id,
+            "userName": self._info.username,
+            "userPassword": self._info.password,
             "orderId": data.transaction_id,
             "saleOrderId": data.transaction_id,
             "saleReferenceId": data.sale_reference_id,
         }
 
         client = self._get_client()
-        verify_result = client.service.bpVerifyRequest(**data)
+        verify_result = client.service.bpVerifyRequest(**payload)
 
         if verify_result == "0":
             return VerifyOutSchema(
-                verified=self._settle_payment(data),
+                verified=self._settle_payment(payload),
             )
         elif verify_result == "45" or verify_result == 45:
             return VerifyOutSchema(
                 verified=True,
             )
         else:
-            inquiry_result = client.service.bpInquiryRequest(**data)
+            inquiry_result = client.service.bpInquiryRequest(**payload)
             if inquiry_result == "0":
                 return VerifyOutSchema(
                     verified=True,
                 )
             else:
-                reversal_result = client.service.bpReversalRequest(**data)
+                reversal_result = client.service.bpReversalRequest(**payload)
                 return VerifyOutSchema(
                     verified=False,
                 )

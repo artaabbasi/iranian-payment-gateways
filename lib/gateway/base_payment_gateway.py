@@ -13,24 +13,26 @@ V = TypeVar('V', bound=BaseVerifySchema)
 I = TypeVar('I', bound=BaseInfoDataModel)
 
 class BasePaymentGateway(ABC, Generic[P, AP, V, I]):
+    def __init__(self, info: I):
+        self._info = info
 
     @abstractmethod
-    def pay(self, info: I, data: P) -> PayOutSchema:
+    def pay(self, data: P) -> PayOutSchema:
         raise Exception("Defining `pay` is required.")
 
     @abstractmethod
-    def verify(self, info: I, data: V) -> VerifyOutSchema:
+    def verify(self, data: V) -> VerifyOutSchema:
         raise Exception("Defining `verify` is required.")
 
     @abstractmethod
     def after_pay(self, data: AP) -> Any:
         raise Exception("Defining `after_pay` is required.")
 
-    async def a_pay(self, info: I, data: P) -> PayOutSchema:
-        return self.pay(info, data)
+    async def a_pay(self, data: P) -> PayOutSchema:
+        return self.pay(data)
 
-    async def a_verify(self, info: I, data: V) -> VerifyOutSchema:
-        return self.verify(info, data)
+    async def a_verify(self, data: V) -> VerifyOutSchema:
+        return self.verify(data)
 
     async def a_after_pay(self, data: AP) -> Any:
         return self.after_pay(data)
