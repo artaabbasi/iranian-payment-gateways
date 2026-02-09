@@ -16,3 +16,5 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.6.3
 zeep==4.3.2
+rsa==4.9
+pycryptodome>=3.9.8
