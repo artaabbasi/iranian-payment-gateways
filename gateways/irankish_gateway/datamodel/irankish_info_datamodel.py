@@ -1,5 +1,3 @@
-from enum import StrEnum
-
 from lib.gateway.datamodel.base_info_datamodel import BaseInfoDataModel
 
 
